@@ -9,6 +9,8 @@ import {
 } from "firebase/auth"
 import { setDoc, doc, serverTimestamp } from "firebase/firestore"
 import { db } from "../Firebase.config"
+import { toast } from "react-toastify"
+import OAuth from "../components/OAuth"
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
@@ -34,6 +36,13 @@ function SignUp() {
     try {
       const auth = getAuth()
 
+      if (password.length <= 8) {
+        // toast.error("Password must contain at least 8 characters")
+        // return
+        throw new Error("Password must contain minimum 8 characters")
+      }
+      console.log("test")
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -55,7 +64,7 @@ function SignUp() {
 
       navigate("/")
     } catch (error) {
-      console.log(error)
+      toast.error(error.message)
     }
   }
 
@@ -99,19 +108,19 @@ function SignUp() {
               onClick={() => setShowPassword((prevState) => !prevState)}
             />
           </div>
+
           <Link to="/forgot-password" className="forgotPasswordLink">
             Forgot Password
           </Link>
-
-          <div className="signUpBar">
+          <div className="signUpBar mt-3">
             <p className="signUpText">Sign Up</p>
-            <button className="signUpButton">
+            <button className="signUpButton mb-3">
               <ArrowRightIcon fil="#ffffff" width="34px" hight="34px" />
             </button>
           </div>
         </form>
 
-        {/* GOOGLE AUTH */}
+        <OAuth />
 
         <Link to="/sign-in" className="registerLink">
           Sign In

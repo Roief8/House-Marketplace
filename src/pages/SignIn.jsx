@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg"
 import visibilityIcon from "../assets/svg/visibilityIcon.svg"
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import OAuth from "../components/OAuth"
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
@@ -37,7 +40,7 @@ function SignIn() {
         navigate("/")
       }
     } catch (error) {
-      console.log(error)
+      toast.error("Wrong Username or Password")
     }
   }
 
@@ -79,13 +82,13 @@ function SignIn() {
 
           <div className="signInBar">
             <p className="signInText">Sign In</p>
-            <button className="signInButton">
+            <button className="signInButton mb-3">
               <ArrowRightIcon fil="#ffffff" width="34px" hight="34px" />
             </button>
           </div>
         </form>
 
-        {/* GOOGLE AUTH */}
+        <OAuth />
 
         <Link to="/sign-up" className="registerLink">
           Sign Up
