@@ -14,7 +14,7 @@ import { toast } from "react-toastify"
 import Spinner from "../components/Spinner"
 import ListingItem from "../components/ListingItem"
 
-function Offers() {
+function Category() {
   const [listing, setListing] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -29,7 +29,7 @@ function Offers() {
         // Create a query
         const q = query(
           ListsRef,
-          where("offer", "==", true),
+          where("type", "==", params.categoryName),
           orderBy("timestamp", "desc"),
           limit(10)
         )
@@ -39,12 +39,15 @@ function Offers() {
 
         const listings = []
 
-        qSnap.forEach((doc) => {
-          return listings.push({
-            id: doc.id,
-            data: doc.data(),
-          })
-        }, [])
+        qSnap.forEach(
+          (doc) => {
+            return listings.push({
+              id: doc.id,
+              data: doc.data(),
+            })
+          },
+          [params.categoryName]
+        )
 
         setListing(listings)
         setLoading(false)
@@ -58,7 +61,7 @@ function Offers() {
   return (
     <div className="category">
       <header>
-        <p className="pageHeader">Offers</p>
+        <p className="pageHeader">Places for {params.categoryName}</p>
       </header>
 
       {loading ? (
@@ -78,10 +81,10 @@ function Offers() {
           </main>
         </>
       ) : (
-        <p>No Offers yet</p>
+        <p>No listings for {params.categoryName}</p>
       )}
     </div>
   )
 }
 
-export default Offers
+export default Category
