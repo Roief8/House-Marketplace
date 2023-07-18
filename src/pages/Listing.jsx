@@ -2,6 +2,10 @@ import { getAuth } from "firebase/auth"
 import { doc, getDoc } from "firebase/firestore"
 import { useState, useEffect } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
+import { Swiper, SwiperSlide } from "swiper/react"
+import "swiper/css/bundle"
+import "swiper/css"
+
 import { db } from "../Firebase.config"
 import Spinner from "../components/Spinner"
 import shareIcon from "../assets/svg/shareIcon.svg"
@@ -21,8 +25,6 @@ function Listing() {
       const docSnap = await getDoc(docRef)
 
       if (docSnap.exists()) {
-        console.log(docSnap.data())
-
         setListing(docSnap.data())
         setLoading(false)
       }
@@ -36,6 +38,23 @@ function Listing() {
   return (
     <main>
       {/* @todo - slider */}
+      <Swiper slidesPerView={1} pagination={{ clickable: true }}>
+        {listing.imgUrls.map((url, index) => (
+          <SwiperSlide key={index}>
+            <div className="swiperSlideDiv">
+              <img
+                src={url}
+                alt={`${listing.name}`}
+                style={{
+                  width: "100%",
+                  height: "400px",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
       <div
         className="shareIconDiv"
@@ -90,13 +109,13 @@ function Listing() {
           <li>{listing.furnished && "Furnished"}</li>
         </ul>
 
-        <p className="listingLocationTitle">Location</p>
+        <p className="listingLocationTitle">Location: {listing.location}</p>
 
         {/* @todo - MAP */}
 
         {auth.currentUser?.uid !== listing.userRef && (
           <Link
-            to={`/contact/${listing.userRef}?listingName=${listing.name}&listingLocation=${listing.location}`}
+            to={`/contact/${listing.userRef}?listingName=${listing.name}`}
             className="primaryButton"
           >
             Contact Owner

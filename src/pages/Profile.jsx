@@ -32,7 +32,7 @@ function Profile() {
   }
   const onSubmit = async () => {
     try {
-      if (auth.currentUser.displayName != name) {
+      if (auth.currentUser.displayName !== name) {
         // Update display name in firebase
         await updateProfile(auth.currentUser, { displayName: name })
 
