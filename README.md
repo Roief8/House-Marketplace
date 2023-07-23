@@ -1,8 +1,14 @@
 House marketplace 
 
-view listed houses and list your on house for sale or rent.
+features:
+
+explore listed houses, sorted by category or offers.
+
+list your on house for sale or rent.
 
 Authentication with google, integration with google firebase database.
+
+option to contact asset owner with email.
 
 
 Screenshots:
